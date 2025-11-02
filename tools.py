@@ -5,7 +5,7 @@ import logging
 from typing import Optional
 from datetime import datetime
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from agno.tools import Toolkit
 from agno.tools.googlesearch import GoogleSearchTools
 
@@ -39,6 +39,22 @@ class CollectUserInfoTool(Toolkit):
         # Register the function
         self.register(self.save_user_info)
     
+    def _get_credentials_from_env(self):
+        """Build credentials dict from environment variables"""
+        return {
+            "type": os.getenv("GOOGLE_SHEETS_CREDENTIALS_TYPE"),
+            "project_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PROJECT_ID"),
+            "private_key_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PRIVATE_KEY_ID"),
+            "private_key": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PRIVATE_KEY", "").replace("\\n", "\n"),
+            "client_email": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_EMAIL"),
+            "client_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_ID"),
+            "auth_uri": os.getenv("GOOGLE_SHEETS_CREDENTIALS_AUTH_URI"),
+            "token_uri": os.getenv("GOOGLE_SHEETS_CREDENTIALS_TOKEN_URI"),
+            "auth_provider_x509_cert_url": os.getenv("GOOGLE_SHEETS_CREDENTIALS_AUTH_PROVIDER_X509_CERT_URL"),
+            "client_x509_cert_url": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_X509_CERT_URL"),
+            "universe_domain": os.getenv("GOOGLE_SHEETS_CREDENTIALS_UNIVERSE_DOMAIN", "googleapis.com")
+        }
+    
     def _get_google_sheets_client(self):
         """Initialize Google Sheets client"""
         try:
@@ -47,12 +63,26 @@ class CollectUserInfoTool(Toolkit):
                 'https://spreadsheets.google.com/feeds',
                 'https://www.googleapis.com/auth/drive'
             ]
-            creds = ServiceAccountCredentials.from_json_keyfile_name(
-                self.credentials_file, scope
-            )
-            client = gspread.authorize(creds)
-            logger.info("Google Sheets client initialized successfully")
-            return client
+            
+            # Try to use credentials from environment variables first
+            creds_dict = self._get_credentials_from_env()
+            if creds_dict.get("client_email") and creds_dict.get("private_key"):
+                logger.info("[GOOGLE SHEETS TOOL] Using credentials from environment variables")
+                creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
+                client = gspread.authorize(creds)
+                logger.info("Google Sheets client initialized successfully with env vars")
+                return client
+            # Fallback to JSON file if environment variables not set
+            elif self.credentials_file and os.path.exists(self.credentials_file):
+                logger.info("[GOOGLE SHEETS TOOL] Using credentials from JSON file: %s", self.credentials_file)
+                creds = Credentials.from_service_account_file(self.credentials_file, scopes=scope)
+                client = gspread.authorize(creds)
+                logger.info("Google Sheets client initialized successfully with JSON file")
+                return client
+            else:
+                logger.error("[GOOGLE SHEETS TOOL] No valid credentials found (neither env vars nor JSON file)")
+                return None
+                
         except Exception as e:
             logger.error("Error connecting to Google Sheets: %s", e)
             return None

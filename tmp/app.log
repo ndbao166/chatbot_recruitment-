@@ -558,3 +558,186 @@
 2025-11-02 17:31:47,125 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 2025-11-02 17:31:48,375 - httpx - INFO - HTTP Request: POST https://os-api.agno.com/telemetry/runs "HTTP/1.1 201 Created"
 2025-11-02 17:31:48,543 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:14:52,667 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:14:52,881 - knowledge_base - INFO - Attempting to load knowledge from Google Sheets...
+2025-11-02 23:14:52,882 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initialized with:
+2025-11-02 23:14:52,882 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:14:52,883 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:14:52,884 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Knowledge Sheet: Knowledge
+2025-11-02 23:14:52,885 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Job Sheet: Jobs
+2025-11-02 23:14:52,886 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - User Info Sheet: UserInfo
+2025-11-02 23:14:52,886 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:14:52,887 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initializing Google Sheets client...
+2025-11-02 23:14:52,887 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Using credentials from environment variables
+2025-11-02 23:14:52,889 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars
+2025-11-02 23:14:55,821 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:14:55,822 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:14:57,066 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:14:57,076 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Saved knowledge data to: data/recruitment_knowledge.csv
+2025-11-02 23:14:57,077 - knowledge_base - INFO - ✅ Loaded knowledge from Google Sheets and cached to data/recruitment_knowledge.csv
+2025-11-02 23:14:58,139 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,147 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,149 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,306 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,312 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,317 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,340 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,371 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,429 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,487 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,496 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,499 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,511 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,558 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,560 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,577 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,578 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,582 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,647 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,740 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,769 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,773 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:14:58,955 - knowledge_base - INFO - ✅ Loaded knowledge from data/recruitment_knowledge.csv
+2025-11-02 23:14:58,956 - tools - INFO - [GOOGLE SHEETS TOOL] Initialized with:
+2025-11-02 23:14:58,957 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:14:58,957 - tools - INFO - [GOOGLE SHEETS TOOL]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:14:58,957 - tools - INFO - [GOOGLE SHEETS TOOL]   - User Info Sheet: UserInfo
+2025-11-02 23:14:58,958 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file exists: True
+2025-11-02 23:15:22,429 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:15:22,631 - knowledge_base - INFO - Attempting to load knowledge from Google Sheets...
+2025-11-02 23:15:22,631 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initialized with:
+2025-11-02 23:15:22,632 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:15:22,632 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:15:22,633 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Knowledge Sheet: Knowledge
+2025-11-02 23:15:22,634 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Job Sheet: Jobs
+2025-11-02 23:15:22,635 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - User Info Sheet: UserInfo
+2025-11-02 23:15:22,635 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:15:22,635 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initializing Google Sheets client...
+2025-11-02 23:15:22,636 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Using credentials from environment variables
+2025-11-02 23:15:22,637 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars
+2025-11-02 23:15:24,523 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:15:24,523 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:15:25,686 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:15:25,696 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Saved knowledge data to: data/recruitment_knowledge.csv
+2025-11-02 23:15:25,696 - knowledge_base - INFO - ✅ Loaded knowledge from Google Sheets and cached to data/recruitment_knowledge.csv
+2025-11-02 23:15:26,772 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,791 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,865 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,867 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,907 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,936 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,981 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:26,997 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,000 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,048 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,050 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,073 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,075 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,097 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,098 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,120 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,138 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,159 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,233 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,235 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,244 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,423 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:15:27,627 - knowledge_base - INFO - ✅ Loaded knowledge from data/recruitment_knowledge.csv
+2025-11-02 23:15:27,627 - tools - INFO - [GOOGLE SHEETS TOOL] Initialized with:
+2025-11-02 23:15:27,628 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:15:27,628 - tools - INFO - [GOOGLE SHEETS TOOL]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:15:27,629 - tools - INFO - [GOOGLE SHEETS TOOL]   - User Info Sheet: UserInfo
+2025-11-02 23:15:27,629 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file exists: False
+2025-11-02 23:15:51,696 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:15:52,775 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:15:52,837 - tools - INFO - [GET JOBS TOOL] Attempting to load jobs from Google Sheets...
+2025-11-02 23:15:52,837 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initialized with:
+2025-11-02 23:15:52,837 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:15:52,838 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:15:52,838 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Knowledge Sheet: Knowledge
+2025-11-02 23:15:52,838 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Job Sheet: Jobs
+2025-11-02 23:15:52,839 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - User Info Sheet: UserInfo
+2025-11-02 23:15:52,839 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading jobs data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Jobs
+2025-11-02 23:15:52,840 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initializing Google Sheets client...
+2025-11-02 23:15:52,841 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Using credentials from environment variables
+2025-11-02 23:15:52,843 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars
+2025-11-02 23:15:54,670 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 12 job listings
+2025-11-02 23:15:54,670 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading jobs data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Jobs
+2025-11-02 23:15:55,778 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 12 job listings
+2025-11-02 23:15:55,780 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Saved jobs data to: data/jobs.json
+2025-11-02 23:15:55,781 - tools - INFO - [GET JOBS TOOL] ✅ Loaded 12 jobs from Google Sheets
+2025-11-02 23:15:59,189 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:16:00,913 - httpx - INFO - HTTP Request: POST https://os-api.agno.com/telemetry/runs "HTTP/1.1 201 Created"
+2025-11-02 23:16:01,107 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:17:03,454 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:17:03,610 - knowledge_base - INFO - Attempting to load knowledge from Google Sheets...
+2025-11-02 23:17:03,611 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initialized with:
+2025-11-02 23:17:03,611 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:17:03,611 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:17:03,612 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Knowledge Sheet: Knowledge
+2025-11-02 23:17:03,612 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Job Sheet: Jobs
+2025-11-02 23:17:03,612 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - User Info Sheet: UserInfo
+2025-11-02 23:17:03,613 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:17:03,613 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initializing Google Sheets client...
+2025-11-02 23:17:03,613 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Using credentials from environment variables
+2025-11-02 23:17:03,615 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars
+2025-11-02 23:17:05,665 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:17:05,666 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading knowledge data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Knowledge
+2025-11-02 23:17:06,879 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 21 knowledge records
+2025-11-02 23:17:06,886 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Saved knowledge data to: data/recruitment_knowledge.csv
+2025-11-02 23:17:06,886 - knowledge_base - INFO - ✅ Loaded knowledge from Google Sheets and cached to data/recruitment_knowledge.csv
+2025-11-02 23:17:07,799 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:07,829 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:07,835 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:07,843 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:07,923 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,031 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,036 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,049 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,077 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,098 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,120 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,220 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,229 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,243 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,244 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,293 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,295 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,297 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,298 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,300 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,301 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,401 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:08,650 - knowledge_base - INFO - ✅ Loaded knowledge from data/recruitment_knowledge.csv
+2025-11-02 23:17:08,652 - tools - INFO - [GOOGLE SHEETS TOOL] Initialized with:
+2025-11-02 23:17:08,652 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:17:08,653 - tools - INFO - [GOOGLE SHEETS TOOL]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:17:08,653 - tools - INFO - [GOOGLE SHEETS TOOL]   - User Info Sheet: UserInfo
+2025-11-02 23:17:08,653 - tools - INFO - [GOOGLE SHEETS TOOL]   - Credentials file exists: False
+2025-11-02 23:17:14,272 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:17:15,803 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:17:16,655 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-11-02 23:17:21,872 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:17:23,710 - httpx - INFO - HTTP Request: POST https://os-api.agno.com/telemetry/runs "HTTP/1.1 201 Created"
+2025-11-02 23:17:23,892 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:17:35,127 - __main__ - INFO - Environment variables loaded
+2025-11-02 23:17:36,296 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:17:36,351 - tools - INFO - [GET JOBS TOOL] Attempting to load jobs from Google Sheets...
+2025-11-02 23:17:36,351 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initialized with:
+2025-11-02 23:17:36,351 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Credentials file: data/freelancer-476916-1703e2c93b82.json
+2025-11-02 23:17:36,352 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Spreadsheet ID: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI
+2025-11-02 23:17:36,352 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Knowledge Sheet: Knowledge
+2025-11-02 23:17:36,352 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - Job Sheet: Jobs
+2025-11-02 23:17:36,352 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER]   - User Info Sheet: UserInfo
+2025-11-02 23:17:36,353 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading jobs data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Jobs
+2025-11-02 23:17:36,354 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Initializing Google Sheets client...
+2025-11-02 23:17:36,354 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Using credentials from environment variables
+2025-11-02 23:17:36,355 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars
+2025-11-02 23:17:38,138 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 12 job listings
+2025-11-02 23:17:38,138 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Loading jobs data from spreadsheet: 1_7AMSkHaWeLjkvVhKqk058y57hKiOqE7oBTGzaZXjWI, sheet: Jobs
+2025-11-02 23:17:39,252 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Successfully loaded 12 job listings
+2025-11-02 23:17:39,256 - google_sheets_loader - INFO - [GOOGLE SHEETS LOADER] Saved jobs data to: data/jobs.json
+2025-11-02 23:17:39,257 - tools - INFO - [GET JOBS TOOL] ✅ Loaded 12 jobs from Google Sheets
+2025-11-02 23:17:42,442 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-02 23:17:44,032 - httpx - INFO - HTTP Request: POST https://os-api.agno.com/telemetry/runs "HTTP/1.1 201 Created"
+2025-11-02 23:17:44,223 - __main__ - INFO - Environment variables loaded

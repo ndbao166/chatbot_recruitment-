@@ -3,7 +3,7 @@ import os
 import logging
 from typing import Optional, List, Dict, Any
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import pandas as pd
 
 # Configure logging
@@ -46,25 +46,50 @@ class GoogleSheetsLoader:
         
         self._client = None
     
+    def _get_credentials_from_env(self):
+        """Build credentials dict from environment variables"""
+        return {
+            "type": os.getenv("GOOGLE_SHEETS_CREDENTIALS_TYPE"),
+            "project_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PROJECT_ID"),
+            "private_key_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PRIVATE_KEY_ID"),
+            "private_key": os.getenv("GOOGLE_SHEETS_CREDENTIALS_PRIVATE_KEY", "").replace("\\n", "\n"),
+            "client_email": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_EMAIL"),
+            "client_id": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_ID"),
+            "auth_uri": os.getenv("GOOGLE_SHEETS_CREDENTIALS_AUTH_URI"),
+            "token_uri": os.getenv("GOOGLE_SHEETS_CREDENTIALS_TOKEN_URI"),
+            "auth_provider_x509_cert_url": os.getenv("GOOGLE_SHEETS_CREDENTIALS_AUTH_PROVIDER_X509_CERT_URL"),
+            "client_x509_cert_url": os.getenv("GOOGLE_SHEETS_CREDENTIALS_CLIENT_X509_CERT_URL"),
+            "universe_domain": os.getenv("GOOGLE_SHEETS_CREDENTIALS_UNIVERSE_DOMAIN", "googleapis.com")
+        }
+    
     def _get_client(self):
         """Get or create Google Sheets client"""
         if self._client is None:
             try:
                 logger.info("[GOOGLE SHEETS LOADER] Initializing Google Sheets client...")
                 
-                if not self.credentials_file or not os.path.exists(self.credentials_file):
-                    logger.error("[GOOGLE SHEETS LOADER] Credentials file not found: %s", self.credentials_file)
-                    raise FileNotFoundError(f"Credentials file not found: {self.credentials_file}")
-                
                 scope = [
                     'https://spreadsheets.google.com/feeds',
                     'https://www.googleapis.com/auth/drive'
                 ]
-                creds = ServiceAccountCredentials.from_json_keyfile_name(
-                    self.credentials_file, scope
-                )
-                self._client = gspread.authorize(creds)
-                logger.info("[GOOGLE SHEETS LOADER] Google Sheets client initialized successfully")
+                
+                # Try to use credentials from environment variables first
+                creds_dict = self._get_credentials_from_env()
+                if creds_dict.get("client_email") and creds_dict.get("private_key"):
+                    logger.info("[GOOGLE SHEETS LOADER] Using credentials from environment variables")
+                    creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
+                    self._client = gspread.authorize(creds)
+                    logger.info("[GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with env vars")
+                # Fallback to JSON file if environment variables not set
+                elif self.credentials_file and os.path.exists(self.credentials_file):
+                    logger.info("[GOOGLE SHEETS LOADER] Using credentials from JSON file: %s", self.credentials_file)
+                    creds = Credentials.from_service_account_file(self.credentials_file, scopes=scope)
+                    self._client = gspread.authorize(creds)
+                    logger.info("[GOOGLE SHEETS LOADER] Google Sheets client initialized successfully with JSON file")
+                else:
+                    logger.error("[GOOGLE SHEETS LOADER] No valid credentials found (neither env vars nor JSON file)")
+                    raise ValueError("No valid Google Sheets credentials found")
+                    
             except Exception as e:
                 logger.error("[GOOGLE SHEETS LOADER] Error initializing client: %s", e, exc_info=True)
                 raise

@@ -16,9 +16,9 @@ ENV/
 # tmp/
 *.db
 
-# Google credentials
-credentials.json
+Google credentials
 *.json
+*.csv
 
 # IDE
 .vscode/
