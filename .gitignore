@@ -13,7 +13,7 @@ ENV/
 .env
 
 # Database
-tmp/
+# tmp/
 *.db
 
 # Google credentials
