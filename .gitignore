@@ -28,5 +28,3 @@ credentials.json
 
 # Streamlit
 .streamlit/secrets.toml
-# Data
-data/
