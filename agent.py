@@ -89,6 +89,8 @@ class RecruitmentAgent:
                 "Thông tin BẮT BUỘC: Tên (name) và Email (email).",
                 "Thông tin TÙY CHỌN: Số điện thoại (phone) và Link profile/CV (profile_link).",
                 "Nếu người dùng chưa cung cấp đủ thông tin bắt buộc, HÃY hỏi lại một cách lịch sự.",
+                "Nếu người dùng đề cập đến một vị trí cụ thể, HÃY lấy 'job_id' tương ứng từ danh sách job (qua tool 'get_current_jobs' hoặc dữ liệu đã tải) và truyền 'job_id' khi gọi 'save_user_info'.",
+                "Nếu người dùng nhắc nhiều vị trí hoặc chưa rõ, HÃY hỏi lại để xác nhận vị trí trước khi lưu và chỉ truyền 'job_id' khi đã rõ ràng.",
                 "Sau khi lưu thông tin thành công, HÃY cảm ơn và thông báo bộ phận tuyển dụng sẽ liên hệ sớm.",
                 
                 # General behavior
