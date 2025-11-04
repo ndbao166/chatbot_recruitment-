@@ -6,8 +6,8 @@ from typing import Optional
 from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
+import requests
 from agno.tools import Toolkit
-from agno.tools.googlesearch import GoogleSearchTools
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -140,15 +140,19 @@ class CollectUserInfoTool(Toolkit):
                        self.spreadsheet_id, self.user_info_sheet_name)
             spreadsheet = client.open_by_key(self.spreadsheet_id)
             worksheet = spreadsheet.worksheet(self.user_info_sheet_name)
-            
+
             # Prepare data
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             row_data = [timestamp, name, email, phone or "", profile_link or "", job_id or ""]
-            
-            # Append data
-            logger.info("[GOOGLE SHEETS TOOL] Appending row to Google Sheets: %s", row_data)
-            worksheet.append_row(row_data)
-            
+
+            # Tìm hàng trống đầu tiên trong cột A
+            all_values = worksheet.col_values(1)  # Lấy tất cả giá trị cột A
+            next_row = len(all_values) + 1
+
+            # Insert vào hàng cụ thể, bắt đầu từ cột A
+            logger.info("[GOOGLE SHEETS TOOL] Inserting row at position %d: %s", next_row, row_data)
+            worksheet.insert_row(row_data, next_row, value_input_option='USER_ENTERED')
+
             logger.info("[GOOGLE SHEETS TOOL] Successfully saved user info for '%s' to Google Sheets", name)
             return f"✅ Đã lưu thông tin của {name} thành công! Bộ phận tuyển dụng sẽ liên hệ với bạn sớm nhất."
             
@@ -339,40 +343,97 @@ class GetCurrentJobsTool(Toolkit):
         )
 
 
-class RecruitmentSearchTool(GoogleSearchTools):
+class RecruitmentSearchTool(Toolkit):
     """
-    Custom Google Search tool focused on recruitment websites.
-    Searches specifically on VTI Recruitment, TopCV, and VietnamWorks.
+    Custom Google Search tool using Google Custom Search JSON API.
+    Focused on recruitment websites (TopCV, VietnamWorks, TopDev, v.v.).
     """
-    
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, name: str = "recruitment_search_tool"):
+        super().__init__(name=name)
+        self.api_key = os.getenv("GOOGLE_CSE_API_KEY") or os.getenv("GOOGLE_SEARCH_API_KEY")
+        self.cx = os.getenv("GOOGLE_CSE_CX") or os.getenv("GOOGLE_SEARCH_CX")
         self.recruitment_sites = [
             "site:vti.com.vn",
             "site:topcv.vn",
-            "site:vietnamworks.com"
+            "site:vietnamworks.com",
+            "site:indeed.com",
+            "site:jobstreet.com",
+            "site:careerbuilder.com",
+            "site:ziprecruiter.com",
+            "site:glassdoor.com",
+            "site:monster.com",
+            "site:careerjet.com",
+            "site:jobrapido.com",
+            "site:topdev.vn",
         ]
-    
+        # Register tool function for the agent
+        self.register(self.search_recruitment_info)
+
+    def _build_site_scope(self) -> str:
+        # Combine site scopes with OR to bias results to recruitment sites
+        # Example: (site:a OR site:b) query terms
+        return "(" + " OR ".join(self.recruitment_sites) + ")"
+
+    def _call_google_cse(self, q: str, num: int) -> dict:
+        if not self.api_key or not self.cx:
+            raise ValueError(
+                "Thiếu cấu hình GOOGLE_CSE_API_KEY hoặc GOOGLE_CSE_CX. Vui lòng thiết lập biến môi trường."
+            )
+        # Cap per-request results to API limit (max 10)
+        n = max(1, min(int(num or 5), 10))
+        params = {
+            "key": self.api_key,
+            "cx": self.cx,
+            "q": q,
+            "num": n,
+            # Optional: safer defaults
+            "safe": "off",
+            "hl": "vi",
+            "gl": "vn",
+        }
+        resp = requests.get("https://www.googleapis.com/customsearch/v1", params=params, timeout=15)
+        resp.raise_for_status()
+        return resp.json()
+
     def search_recruitment_info(self, query: str, max_results: int = 5) -> str:
         """
-        Search for recruitment information on specific Vietnamese recruitment websites.
-        
+        Tìm kiếm thông tin tuyển dụng từ các trang việc làm uy tín bằng Google CSE.
+
         Args:
-            query: Search query about recruitment topics
-            max_results: Maximum number of results to return (default: 5)
-        
+            query: Nội dung cần tìm
+            max_results: Số kết quả tối đa (<=10)
+
         Returns:
-            str: Search results from recruitment websites
+            Chuỗi kết quả đã định dạng kèm liên kết nguồn.
         """
         try:
-            # Add site restrictions to query
-            enhanced_query = f"{query} ({' OR '.join(self.recruitment_sites)})"
-            
-            # Use parent class google_search method
-            results = self.google_search(query=enhanced_query, max_results=max_results)
-            
-            return results
-            
+            data = self._call_google_cse(query, max_results)
+            items = data.get("items", [])
+            if not items:
+                return "Không tìm thấy kết quả phù hợp. Bạn có thể thử mô tả cụ thể hơn."
+
+            lines = ["🔎 Kết quả tìm kiếm liên quan:", ""]
+            citations = []
+            for idx, item in enumerate(items, 1):
+                title = item.get("title", "(Không tiêu đề)")
+                snippet = item.get("snippet", "")
+                link = item.get("link", "")
+                lines.append(f"**{idx}. {title}**")
+                if snippet:
+                    lines.append(f"   - {snippet}")
+                if link:
+                    lines.append(f"   - 🔗 {link}")
+                    citations.append(link)
+                lines.append("")
+
+            if citations:
+                lines.append("Nguồn:")
+                for c in citations[:3]:
+                    lines.append(f"- {c}")
+
+            return "\n".join(lines)
         except Exception as e:
+            logger.error("[RECRUITMENT SEARCH TOOL] Error: %s", e, exc_info=True)
             return f"Không thể tìm kiếm thông tin: {str(e)}"
 

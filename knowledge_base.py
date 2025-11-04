@@ -3,7 +3,7 @@ import os
 import logging
 from pathlib import Path
 from agno.knowledge import Knowledge
-from agno.knowledge.embedder.openai import OpenAIEmbedder
+from agno.knowledge.embedder.google import GeminiEmbedder
 from agno.vectordb.lancedb import LanceDb
 from agno.knowledge.chunking.row import RowChunking
 from agno.knowledge.reader.csv_reader import CSVReader
@@ -40,10 +40,7 @@ def setup_knowledge_base(
         vector_db=LanceDb(
             uri=lancedb_path,
             table_name=table_name,
-            embedder=OpenAIEmbedder(
-                id="text-embedding-3-small",
-                dimensions=1536
-            ),
+            embedder=GeminiEmbedder(),
         ),
     )
     
