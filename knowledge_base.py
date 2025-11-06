@@ -3,7 +3,8 @@ import os
 import logging
 from pathlib import Path
 from agno.knowledge import Knowledge
-from agno.knowledge.embedder.google import GeminiEmbedder
+# from agno.knowledge.embedder.google import GeminiEmbedder
+from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.vectordb.lancedb import LanceDb
 from agno.knowledge.chunking.row import RowChunking
 from agno.knowledge.reader.csv_reader import CSVReader
@@ -18,6 +19,7 @@ def setup_knowledge_base(
     csv_file: str = "data/recruitment_knowledge.csv",
     table_name: str = "recruitment_knowledge",
     use_google_sheets: bool = True,
+    force_reload: bool = False,
 ) -> Knowledge:
     """
     Setup knowledge base with LanceDB and data from Google Sheets or CSV.
@@ -27,6 +29,7 @@ def setup_knowledge_base(
         csv_file: Path to CSV file with recruitment knowledge (fallback)
         table_name: Name of the LanceDB table
         use_google_sheets: Whether to load data from Google Sheets (default: True)
+        force_reload: If True, always reload from Google Sheets even if CSV exists (default: False)
     
     Returns:
         Knowledge: Configured knowledge base
@@ -40,14 +43,16 @@ def setup_knowledge_base(
         vector_db=LanceDb(
             uri=lancedb_path,
             table_name=table_name,
-            embedder=GeminiEmbedder(),
+            embedder=OpenAIEmbedder(),
         ),
+        max_results=1
     )
     
-    # Try to load from Google Sheets first
-    if use_google_sheets:
+    # Try to load from Google Sheets only if CSV cache doesn't exist or force_reload is True
+    # This avoids unnecessary API calls on every initialization
+    if use_google_sheets and (force_reload or not os.path.exists(csv_file)):
         try:
-            logger.info("Attempting to load knowledge from Google Sheets...")
+            logger.info("CSV cache not found. Attempting to load knowledge from Google Sheets...")
             sheets_loader = GoogleSheetsLoader()
             
             # Load data from Google Sheets
@@ -58,9 +63,11 @@ def setup_knowledge_base(
                 sheets_loader.save_knowledge_to_csv(csv_file)
                 logger.info("✅ Loaded knowledge from Google Sheets and cached to %s", csv_file)
             else:
-                logger.warning("⚠️ Could not load from Google Sheets, will try local CSV")
+                logger.warning("⚠️ Could not load from Google Sheets, will try local CSV if exists")
         except Exception as e:
-            logger.warning("⚠️ Error loading from Google Sheets: %s. Will try local CSV", e)
+            logger.warning("⚠️ Error loading from Google Sheets: %s. Will try local CSV if exists", e)
+    elif use_google_sheets and os.path.exists(csv_file):
+        logger.info("Using cached CSV file: %s (skip Google Sheets to improve performance)", csv_file)
     
     # Load CSV data (either from cache or original file)
     if os.path.exists(csv_file):

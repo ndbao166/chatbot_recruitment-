@@ -65,8 +65,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+@st.cache_resource
+def initialize_agent():
+    """Initialize and cache the recruitment agent"""
+    logger.info("🔄 Khởi tạo chatbot agent...")
+    use_google_sheets = os.getenv("USE_GOOGLE_SHEETS", "true").lower() == "true"
+    agent = create_recruitment_agent(
+        db_file=os.getenv("DB_FILE", "tmp/recruitment_db.db"),
+        lancedb_path=os.getenv("LANCEDB_PATH", "tmp/lancedb"),
+        use_google_sheets=use_google_sheets,
+    )
+    logger.info("✅ Chatbot agent đã được khởi tạo thành công")
+    return agent
+
+
 def initialize_session_state():
     """Initialize Streamlit session state"""
+    # Initialize agent - always get from cache or create new
+    # Agent is cached, so knowledge base is only loaded once
+    if "agent" not in st.session_state:
+        st.session_state.agent = initialize_agent()
+        # NOTE: Removed automatic reload_knowledge() to improve performance
+        # Knowledge base is loaded once when agent is initialized and cached
+        # Use manual reload button in sidebar if you need to refresh data
+    
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
@@ -75,16 +97,6 @@ def initialize_session_state():
     
     if "user_id" not in st.session_state:
         st.session_state.user_id = str(uuid.uuid4())
-    
-    if "agent" not in st.session_state:
-        with st.spinner("Đang khởi tạo chatbot..."):
-            use_google_sheets = os.getenv("USE_GOOGLE_SHEETS", "true").lower() == "true"
-            st.session_state.agent = create_recruitment_agent(
-                model_id=os.getenv("OPENAI_MODEL", "gpt-4.1"),
-                db_file=os.getenv("DB_FILE", "tmp/recruitment_db.db"),
-                lancedb_path=os.getenv("LANCEDB_PATH", "tmp/lancedb"),
-                use_google_sheets=use_google_sheets,
-            )
     
     if "conversation_started" not in st.session_state:
         st.session_state.conversation_started = False
@@ -136,39 +148,73 @@ def handle_user_input(user_input: str):
     with st.chat_message("user", avatar="👤"):
         st.markdown(user_input)
     
-    # Get agent response
+    # Get agent response with streaming for better UX
     with st.chat_message("assistant", avatar="🤖"):
         message_placeholder = st.empty()
         
-        with st.spinner("Đang suy nghĩ..."):
+        try:
+            # Use streaming for faster perceived response time
+            response = st.session_state.agent.chat(
+                message=user_input,
+                user_id=st.session_state.user_id,
+                session_id=st.session_state.session_id,
+            )
+            
+            # Stream the response
+            assistant_message = ""
             try:
-                response = st.session_state.agent.chat(
-                    message=user_input,
-                    user_id=st.session_state.user_id,
-                    session_id=st.session_state.session_id,
-                    stream=False,
-                )
-                
-                assistant_message = response.content
+                # Try to iterate over response chunks
+                for chunk in response:
+                    # Handle different chunk formats
+                    if hasattr(chunk, 'content') and chunk.content:
+                        assistant_message += chunk.content
+                    elif isinstance(chunk, str):
+                        assistant_message += chunk
+                    elif hasattr(chunk, 'text'):
+                        assistant_message += chunk.text
+                    
+                    # Update UI with streaming cursor
+                    if assistant_message:
+                        message_placeholder.markdown(assistant_message + "▌")
+            except (TypeError, AttributeError):
+                # If response is not iterable, treat as single response
+                if hasattr(response, 'content'):
+                    assistant_message = response.content
+                elif isinstance(response, str):
+                    assistant_message = response
+                else:
+                    assistant_message = str(response)
                 message_placeholder.markdown(assistant_message)
-                
-                # Add assistant message to chat history
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": assistant_message
-                })
-                
-            except Exception as e:
-                error_message = f"❌ Xin lỗi, đã có lỗi xảy ra: {str(e)}"
-                message_placeholder.markdown(error_message)
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": error_message
-                })
+            
+            # Final message without cursor
+            if assistant_message:
+                message_placeholder.markdown(assistant_message)
+            else:
+                message_placeholder.markdown("⚠️ Không nhận được phản hồi từ chatbot.")
+            
+            # Add assistant message to chat history
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": assistant_message
+            })
+            
+        except Exception as e:
+            logger.error("Error in chat: %s", e, exc_info=True)
+            error_message = f"❌ Xin lỗi, đã có lỗi xảy ra: {str(e)}"
+            message_placeholder.markdown(error_message)
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": error_message
+            })
 
 
 def main():
     """Main application"""
+    # Initialize agent early to ensure it's ready
+    if "agent" not in st.session_state:
+        with st.spinner("🔄 Đang khởi tạo chatbot..."):
+            st.session_state.agent = initialize_agent()
+    
     # Initialize session state
     initialize_session_state()
     
@@ -178,11 +224,9 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.header("⚙️ Cài đặt")
-        
         # Session info
         st.subheader("📊 Thông tin phiên")
-        st.text(f"Session ID: {st.session_state.session_id[:8]}...")
+        st.text(f"Session ID: {st.session_state.session_id}")
         st.text(f"Số tin nhắn: {len(st.session_state.messages)}")
         
         st.divider()
@@ -208,6 +252,14 @@ def main():
             st.session_state.conversation_started = False
             st.rerun()
         
+        if st.button("🔄 Tải lại dữ liệu (nếu cần)", use_container_width=True):
+            with st.spinner("Đang tải lại dữ liệu..."):
+                try:
+                    st.session_state.agent.reload_knowledge()
+                    st.success("✅ Đã tải lại dữ liệu thành công!")
+                except Exception as e:
+                    st.error(f"❌ Lỗi khi tải lại: {str(e)}")
+        
         st.divider()
         
         # Information
@@ -232,9 +284,6 @@ def main():
     
     # Show suggested questions if no messages yet (only greeting)
     if len(st.session_state.messages) <= 1:
-        st.markdown("### ⚡ Câu hỏi gợi ý")
-        st.markdown("Bạn có thể bắt đầu bằng một trong những câu hỏi sau:")
-        
         col1, col2 = st.columns(2)
         
         with col1:
@@ -260,15 +309,6 @@ def main():
         handle_user_input(prompt)
         st.rerun()
     
-    # Footer
-    st.divider()
-    st.markdown(
-        '<div style="text-align: center; color: #666; font-size: 0.9rem;">'
-        'Powered by Agno Framework & Streamlit | © 2024'
-        '</div>',
-        unsafe_allow_html=True
-    )
-
 
 if __name__ == "__main__":
     main()

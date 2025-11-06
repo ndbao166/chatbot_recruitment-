@@ -18,6 +18,7 @@ dependencies = [
     "sqlalchemy>=2.0.44",
     "aiofiles>=25.1.0",
     "google-genai>=1.48.0",
+    "rich>=14.2.0",
 ]
 
 [tool.uv]

@@ -8,7 +8,6 @@ import gspread
 from google.oauth2.service_account import Credentials
 import requests
 from agno.tools import Toolkit
-
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -93,7 +92,7 @@ class CollectUserInfoTool(Toolkit):
         email: str,
         phone: Optional[str] = None,
         profile_link: Optional[str] = None,
-        job_id: Optional[str] = None,
+        job_title: Optional[str] = None,
     ) -> str:
         """
         Save user information to Google Sheets.
@@ -103,11 +102,12 @@ class CollectUserInfoTool(Toolkit):
             email: User's email address (required)
             phone: User's phone number (optional)
             profile_link: User's profile link (LinkedIn, CV, etc.) (optional)
+            job_title: Job title (required)
         
         Returns:
             str: Success or error message
         """
-        logger.info("[GOOGLE SHEETS TOOL] Called save_user_info with name='%s', email='%s', phone='%s', profile_link='%s', job_id='%s'", name, email, phone, profile_link, job_id)
+        logger.info("[GOOGLE SHEETS TOOL] Called save_user_info with name='%s', email='%s', phone='%s', profile_link='%s', job_title='%s'", name, email, phone, profile_link, job_title)
         
         try:
             # Validate required fields
@@ -122,18 +122,18 @@ class CollectUserInfoTool(Toolkit):
             
             if not self.credentials_file:
                 logger.warning("[GOOGLE SHEETS TOOL] Credentials file path is None, falling back to local file")
-                return self._save_to_local_file(name, email, phone, profile_link, job_id)
+                return self._save_to_local_file(name, email, phone, profile_link, job_title)
             
             if not os.path.exists(self.credentials_file):
                 logger.warning("[GOOGLE SHEETS TOOL] Credentials file does not exist at path: %s, falling back to local file", 
                              self.credentials_file)
-                return self._save_to_local_file(name, email, phone, profile_link, job_id)
+                return self._save_to_local_file(name, email, phone, profile_link, job_title)
             
             # Connect to Google Sheets
             client = self._get_google_sheets_client()
             if not client:
                 logger.warning("[GOOGLE SHEETS TOOL] Failed to get Google Sheets client, falling back to local file")
-                return self._save_to_local_file(name, email, phone, profile_link, job_id)
+                return self._save_to_local_file(name, email, phone, profile_link, job_title)
             
             # Open spreadsheet and get the user info sheet
             logger.info("[GOOGLE SHEETS TOOL] Opening spreadsheet with ID: %s, sheet: %s", 
@@ -143,7 +143,7 @@ class CollectUserInfoTool(Toolkit):
 
             # Prepare data
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            row_data = [timestamp, name, email, phone or "", profile_link or "", job_id or ""]
+            row_data = [timestamp, name, email, phone or "", profile_link or "", job_title or ""]
 
             # Tìm hàng trống đầu tiên trong cột A
             all_values = worksheet.col_values(1)  # Lấy tất cả giá trị cột A
@@ -158,7 +158,7 @@ class CollectUserInfoTool(Toolkit):
             
         except Exception as e:
             logger.error("[GOOGLE SHEETS TOOL] Error saving to Google Sheets: %s", e, exc_info=True)
-            return self._save_to_local_file(name, email, phone, profile_link, job_id)
+            return self._save_to_local_file(name, email, phone, profile_link, job_title)
     
     def _save_to_local_file(
         self,
@@ -166,7 +166,7 @@ class CollectUserInfoTool(Toolkit):
         email: str,
         phone: Optional[str] = None,
         profile_link: Optional[str] = None,
-        job_id: Optional[str] = None,
+        job_title: Optional[str] = None,
     ) -> str:
         """Fallback: Save to local JSON file if Google Sheets is not available"""
         logger.info("[GOOGLE SHEETS TOOL] Using fallback: saving to local file for user '%s'", name)
@@ -189,7 +189,7 @@ class CollectUserInfoTool(Toolkit):
                 "email": email,
                 "phone": phone or "",
                 "profile_link": profile_link or "",
-                "job_id": job_id or ""
+                "job_title": job_title or ""
             }
             data.append(user_data)
             
