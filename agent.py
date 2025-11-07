@@ -68,6 +68,7 @@ class RecruitmentAgent:
             model=Gemini(id=model_id),
             db=self.db,
             knowledge=self.knowledge,
+            telemetry=False,
             tools=[
                 self.collect_info_tool,
                 self.get_jobs_tool,
